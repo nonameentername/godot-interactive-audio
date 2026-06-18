@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://g0rupki08g22"]
+
+[ext_resource type="Script" uid="uid://rfhkou0480t4" path="res://test.gd" id="1_37kl0"]
+
+[sub_resource type="AudioStreamLv2" id="AudioStreamLv2_mf4mk"]
+
+[sub_resource type="AudioStreamLv2" id="AudioStreamLv2_37kl0"]
+lv2_name = "amsynth2"
+
+[sub_resource type="AudioStreamLv2" id="AudioStreamLv2_8uh7m"]
+lv2_name = "amsynth3"
+
+[sub_resource type="AudioStreamVst3" id="AudioStreamVst3_37kl0"]
+
+[sub_resource type="AudioStreamLv2" id="AudioStreamLv2_6uqi0"]
+lv2_name = "Reverb"
+
+[node name="Node2D" type="Node2D" unique_id=1854927735]
+script = ExtResource("1_37kl0")
+
+[node name="AmSynthPlayer1" type="AudioStreamPlayer2D" parent="." unique_id=1736940217]
+stream = SubResource("AudioStreamLv2_mf4mk")
+autoplay = true
+bus = &"Distortion"
+
+[node name="AmSynthPlayer2" type="AudioStreamPlayer2D" parent="." unique_id=512232680]
+stream = SubResource("AudioStreamLv2_37kl0")
+autoplay = true
+bus = &"Distortion"
+
+[node name="AmSynthPlayer3" type="AudioStreamPlayer2D" parent="." unique_id=1112039729]
+stream = SubResource("AudioStreamLv2_8uh7m")
+autoplay = true
+bus = &"Distortion"
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=636015219]
+stream = SubResource("AudioStreamVst3_37kl0")
+autoplay = true
+
+[node name="ReverbPlayer" type="AudioStreamPlayer2D" parent="." unique_id=886879088]
+stream = SubResource("AudioStreamLv2_6uqi0")
+autoplay = true

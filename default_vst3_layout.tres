@@ -1,0 +1,4 @@
+[gd_resource type="Vst3Layout" format=3 uid="uid://cspnstekgjxye"]
+
+[resource]
+vst3/0/uri = "/usr/lib/vst3/Vital.vst3"

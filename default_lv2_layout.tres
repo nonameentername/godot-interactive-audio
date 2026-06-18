@@ -1,0 +1,22 @@
+[gd_resource type="Lv2Layout" format=3 uid="uid://dp0occbrkuewo"]
+
+[resource]
+lv2/0/uri = "http://code.google.com/p/amsynth/amsynth"
+lv2/1/name = "amsynth2"
+lv2/1/solo = false
+lv2/1/mute = false
+lv2/1/bypass = false
+lv2/1/volume_db = 0.0
+lv2/1/uri = "http://code.google.com/p/amsynth/amsynth"
+lv2/2/name = "amsynth3"
+lv2/2/solo = false
+lv2/2/mute = false
+lv2/2/bypass = false
+lv2/2/volume_db = 0.0
+lv2/2/uri = "http://code.google.com/p/amsynth/amsynth"
+lv2/3/name = "Reverb"
+lv2/3/solo = false
+lv2/3/mute = false
+lv2/3/bypass = false
+lv2/3/volume_db = 0.0
+lv2/3/uri = "http://calf.sourceforge.net/plugins/Reverb"

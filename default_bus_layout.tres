@@ -1,0 +1,15 @@
+[gd_resource type="AudioBusLayout" format=3 uid="uid://bwghukn2i8osp"]
+
+[sub_resource type="AudioEffectSetLv2Channel" id="AudioEffectSetLv2Channel_j3pel"]
+instance_name = "Reverb"
+resource_name = "SetLv2Channel"
+
+[resource]
+bus/1/name = &"Distortion"
+bus/1/solo = false
+bus/1/mute = false
+bus/1/bypass_fx = false
+bus/1/volume_db = 0.0
+bus/1/send = &"Master"
+bus/1/effect/0/effect = SubResource("AudioEffectSetLv2Channel_j3pel")
+bus/1/effect/0/enabled = true
