@@ -25,10 +25,6 @@ csound/hide_csound_logs=false
 window/size/viewport_width=640
 window/size/viewport_height=360
 
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/csound/plugin.cfg", "res://addons/lv2-host/plugin.cfg", "res://addons/vst3-host/plugin.cfg")
-
 [input]
 
 left={
