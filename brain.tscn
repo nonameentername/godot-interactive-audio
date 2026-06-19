@@ -25,7 +25,7 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_esyo7"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4w5wn"]
 size = Vector2(32, 16)
 
 [node name="Node2D" type="CharacterBody2D" unique_id=625299191]
@@ -36,4 +36,4 @@ sprite_frames = SubResource("SpriteFrames_j42od")
 frame_progress = 0.48711112
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1878317848]
-shape = SubResource("RectangleShape2D_esyo7")
+shape = SubResource("RectangleShape2D_4w5wn")

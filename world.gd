@@ -21,4 +21,6 @@ func _on_timer_timeout() -> void:
 	var brain: Node2D = brain_scene.instantiate()
 	
 	add_child(brain)
+	move_child(brain, 7)
+
 	brain.global_position = spawn_location.global_position

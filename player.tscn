@@ -165,8 +165,9 @@ animations = [{
 "speed": 7.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_onrkg"]
-size = Vector2(32, 64)
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_onrkg"]
+radius = 8.0
+height = 64.0
 
 [node name="Player" type="CharacterBody2D" unique_id=1198168635]
 script = ExtResource("1_onrkg")
@@ -180,4 +181,4 @@ animation = &"walk"
 frame_progress = 0.66511613
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=319139331]
-shape = SubResource("RectangleShape2D_onrkg")
+shape = SubResource("CapsuleShape2D_onrkg")
