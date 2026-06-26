@@ -1,0 +1,14 @@
+[remap]
+
+importer="soundfont"
+type="SoundFontFileReader"
+uid="uid://dgrwxbk7844k6"
+path="res://.godot/imported/128-016-Power.sf2-f1523e28522756e488f3537ac9eaae18.sf2str"
+
+[deps]
+
+source_file="res://assets/128-016-Power.sf2"
+dest_files=["res://.godot/imported/128-016-Power.sf2-f1523e28522756e488f3537ac9eaae18.sf2str"]
+
+[params]
+

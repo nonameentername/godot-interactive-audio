@@ -1,0 +1,14 @@
+[remap]
+
+importer="csound"
+type="CsoundFileReader"
+uid="uid://bsyhc2405href"
+path="res://.godot/imported/audio.csd-66bc396f7bdf6b563fac010fee92612d.csoundstr"
+
+[deps]
+
+source_file="res://audio.csd"
+dest_files=["res://.godot/imported/audio.csd-66bc396f7bdf6b563fac010fee92612d.csoundstr"]
+
+[params]
+

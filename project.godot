@@ -11,14 +11,14 @@ config_version=5
 [application]
 
 config/name="GodotInteractiveAudio"
-run/main_scene="res://test.tscn"
+run/main_scene="uid://3ofuqor8abad"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [audio]
 
 buses/default_bus_layout="uid://bwghukn2i8osp"
-csound/hide_csound_logs=false
+csound/hide_csound_logs=true
 
 [display]
 

@@ -1,6 +1,6 @@
 [gd_resource type="CsoundLayout" format=3 uid="uid://ceuso56h06j15"]
 
-[ext_resource type="CsoundFileReader" uid="uid://b6s7ejspdncn3" path="res://test.csd" id="1_naxem"]
+[ext_resource type="CsoundFileReader" uid="uid://bsyhc2405href" path="res://audio.csd" id="1_naxem"]
 
 [resource]
 csound/0/script = ExtResource("1_naxem")

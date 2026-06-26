@@ -108,6 +108,29 @@ shader = ExtResource("8_gbfbk")
 shader_parameter/pixelation = 0.0010000000475
 shader_parameter/opacity = 1.0
 
+[sub_resource type="AudioStreamCsound" id="AudioStreamCsound_gbfbk"]
+
+[sub_resource type="AudioStreamLv2" id="AudioStreamLv2_wse8f"]
+lv2_name = "guitar"
+
+[sub_resource type="AudioStreamLv2" id="AudioStreamLv2_ic0uy"]
+lv2_name = "bass1"
+
+[sub_resource type="AudioStreamLv2" id="AudioStreamLv2_k3n1d"]
+lv2_name = "dirty_bass"
+
+[sub_resource type="AudioStreamLv2" id="AudioStreamLv2_ioo17"]
+lv2_name = "atmosphere"
+
+[sub_resource type="AudioStreamLv2" id="AudioStreamLv2_2o6r5"]
+lv2_name = "ambience"
+
+[sub_resource type="AudioStreamLv2" id="AudioStreamLv2_gbfbk"]
+lv2_name = "space"
+
+[sub_resource type="AudioStreamLv2" id="AudioStreamLv2_70uel"]
+lv2_name = "bass2"
+
 [node name="Node2D" type="Node2D" unique_id=2137336129]
 script = ExtResource("1_dwbse")
 brain_scene = ExtResource("2_pkg7o")
@@ -164,5 +187,37 @@ run_speed = 450.0
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=458178612]
 script = ExtResource("4_aqk2v")
 max_y = 734
+
+[node name="CsoundStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=331599848]
+stream = SubResource("AudioStreamCsound_gbfbk")
+autoplay = true
+
+[node name="GuitarSynthStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=216312690]
+stream = SubResource("AudioStreamLv2_wse8f")
+autoplay = true
+
+[node name="Bass1SynthStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=397577433]
+stream = SubResource("AudioStreamLv2_ic0uy")
+autoplay = true
+
+[node name="DirtyBassStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=2024652637]
+stream = SubResource("AudioStreamLv2_k3n1d")
+autoplay = true
+
+[node name="AtmosphereSynthStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1851914004]
+stream = SubResource("AudioStreamLv2_ioo17")
+autoplay = true
+
+[node name="AmbienceSynthStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=250991954]
+stream = SubResource("AudioStreamLv2_2o6r5")
+autoplay = true
+
+[node name="SpaceSynthStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=581098009]
+stream = SubResource("AudioStreamLv2_gbfbk")
+autoplay = true
+
+[node name="Bass2SynthStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=438879228]
+stream = SubResource("AudioStreamLv2_70uel")
+autoplay = true
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

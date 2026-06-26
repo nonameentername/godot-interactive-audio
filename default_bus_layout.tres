@@ -1,7 +1,6 @@
 [gd_resource type="AudioBusLayout" format=3 uid="uid://bwghukn2i8osp"]
 
 [sub_resource type="AudioEffectSetLv2Channel" id="AudioEffectSetLv2Channel_j3pel"]
-instance_name = "Reverb"
 resource_name = "SetLv2Channel"
 
 [resource]
