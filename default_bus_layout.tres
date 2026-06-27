@@ -1,14 +1,29 @@
 [gd_resource type="AudioBusLayout" format=3 uid="uid://bwghukn2i8osp"]
 
+[sub_resource type="AudioEffectSetLv2Channel" id="AudioEffectSetLv2Channel_g28q7"]
+forward_audio = false
+instance_name = "equalizer"
+resource_name = "SetLv2Channel"
+
 [sub_resource type="AudioEffectSetLv2Channel" id="AudioEffectSetLv2Channel_j3pel"]
+forward_audio = false
+instance_name = "reverb"
 resource_name = "SetLv2Channel"
 
 [resource]
-bus/1/name = &"Distortion"
+bus/1/name = &"equalizer"
 bus/1/solo = false
 bus/1/mute = false
 bus/1/bypass_fx = false
 bus/1/volume_db = 0.0
 bus/1/send = &"Master"
-bus/1/effect/0/effect = SubResource("AudioEffectSetLv2Channel_j3pel")
+bus/1/effect/0/effect = SubResource("AudioEffectSetLv2Channel_g28q7")
 bus/1/effect/0/enabled = true
+bus/2/name = &"audio"
+bus/2/solo = false
+bus/2/mute = false
+bus/2/bypass_fx = false
+bus/2/volume_db = 0.0
+bus/2/send = &"Master"
+bus/2/effect/0/effect = SubResource("AudioEffectSetLv2Channel_j3pel")
+bus/2/effect/0/enabled = true

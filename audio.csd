@@ -1,7 +1,7 @@
 <CsoundSynthesizer>
 <CsOptions>
+-+rtmidi=NULL -M0 -n -t120
 </CsOptions>
--+rtmidi=NULL -M0 -n
 <CsInstruments>
 sr = 44100
 ksmps = 32
@@ -82,6 +82,14 @@ instr marker, 8
 
   ;aSin poscil iAmplitude, iFrequency
   ;outs aSin, aSin
+endin
+
+iTempo = 120
+tempo iTempo, 120
+
+instr update_tempo
+  iTempo = p4
+  tempo iTempo, 120
 endin
 
 </CsInstruments>

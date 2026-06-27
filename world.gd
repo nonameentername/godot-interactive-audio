@@ -11,6 +11,9 @@ var timer: Timer = $Timer
 @onready
 var spawn_location: PathFollow2D = $SpawnPath/SpawnLocation
 
+var water_eq_tween: Tween
+var reverb_current_value: int = 0
+
 var csound: CsoundInstance
 
 var guitar_synth: Lv2Instance
@@ -20,12 +23,20 @@ var atmosphere_synth: Lv2Instance
 var ambience_synth: Lv2Instance
 var space_synth: Lv2Instance
 var bass2_synth: Lv2Instance
+var reverb_effect: Lv2Instance
+var equalizer: Lv2Instance
+
+const REVERB_TIME_INPUT_CONTROL = 0
+
+const EQUALIZER_HS_ACTIVE_INPUT_CONTROL = 7
+const EQUALIZER_LEVEL_H_INPUT_CONTROL = 8
+const EQUALIZER_FREQ_H_INPUT_CONTROL = 9
 
 func _ready():
 	CsoundServer.csound_layout_changed.connect(csound_layout_changed)
 	Lv2Server.lv2_ready.connect(_on_lv2_ready)
 
-	timer.start()
+	#timer.start()
 
 
 func csound_layout_changed():
@@ -63,12 +74,29 @@ func _on_lv2_ready(name: String):
 		bass2_synth = Lv2Server.get_instance(name)
 		bass2_synth.load_preset("BriansBank01: 032: basic")
 
-	#for preset in guitar_synth.get_presets():
-	#	print(preset)
+	if name == "reverb":
+		reverb_effect = Lv2Server.get_instance(name)
+		reverb_effect.load_preset("Cathedral 1")
+		reverb_effect.send_input_control_channel(REVERB_TIME_INPUT_CONTROL, 0)
+
+		#for input_control in reverb_effect.get_input_controls():
+		#	print (input_control.name, input_control.index)
+
+		#for preset in reverb_effect.get_presets():
+		#	print(preset)
+
+	if name == "equalizer":
+		equalizer = Lv2Server.get_instance(name)
+		equalizer.send_input_control_channel(EQUALIZER_HS_ACTIVE_INPUT_CONTROL, 1)
+		equalizer.send_input_control_channel(EQUALIZER_LEVEL_H_INPUT_CONTROL, 1)
+		equalizer.send_input_control_channel(EQUALIZER_FREQ_H_INPUT_CONTROL, 1024)
+
+		#for input_control in equalizer.get_input_controls():
+		#	print (input_control.name, " ", input_control.index)
 
 
 func _on_midi_note_on(channel, note, velocity):
-	print("Note On: channel: ", channel, " note: ", note, " velocity: ", velocity)
+	#print("Note On: channel: ", channel, " note: ", note, " velocity: ", velocity)
 
 	if guitar_synth and channel == 1:
 		guitar_synth.note_on(0, 0, note, velocity)
@@ -93,7 +121,7 @@ func _on_midi_note_on(channel, note, velocity):
 
 
 func _on_midi_note_off(channel, note):
-	print("Note Off: channel: ", channel, " note: ", note)
+	#print("Note Off: channel: ", channel, " note: ", note)
 
 	if guitar_synth and channel == 1:
 		guitar_synth.note_off(0, 0, note)
@@ -126,3 +154,55 @@ func _on_timer_timeout() -> void:
 	move_child(brain, 7)
 
 	brain.global_position = spawn_location.global_position
+
+
+func tween_control_channel(audio_plugin: Lv2Instance, control: int, from_value: float, to_value: float) -> void:
+	if not audio_plugin:
+		return
+
+	if water_eq_tween:
+		water_eq_tween.kill()
+
+	water_eq_tween = get_tree().create_tween()
+	water_eq_tween.tween_method(
+		func(value): audio_plugin.send_input_control_channel(control, value),
+		from_value,
+		to_value,
+		0.2
+	)
+
+
+func _on_water_area_2d_body_entered(body: Node2D) -> void:
+	tween_control_channel(equalizer, EQUALIZER_LEVEL_H_INPUT_CONTROL, 1.0, 0.2)
+
+
+func _on_water_area_2d_body_exited(body: Node2D) -> void:
+	tween_control_channel(equalizer, EQUALIZER_LEVEL_H_INPUT_CONTROL, 0.2, 1.0)
+
+
+func _on_outside_area_2d_body_entered(body: Node2D) -> void:
+	tween_control_channel(reverb_effect, REVERB_TIME_INPUT_CONTROL, reverb_current_value, 0.0)
+	reverb_current_value = 0.0
+
+
+func _on_small_room_area_2d_body_entered(body: Node2D) -> void:
+	tween_control_channel(reverb_effect, REVERB_TIME_INPUT_CONTROL, reverb_current_value, 16.0)
+	reverb_current_value = 16.0
+
+
+func _on_medium_room_area_2d_body_entered(body: Node2D) -> void:
+	tween_control_channel(reverb_effect, REVERB_TIME_INPUT_CONTROL, reverb_current_value, 32.0)
+	reverb_current_value = 32.0
+
+	update_tempo(120)
+
+
+func update_tempo(value):
+	csound.event_string('i "update_tempo" 0 -1 %d' % value)
+
+
+func _on_large_room_area_2d_body_entered(body: Node2D) -> void:
+	tween_control_channel(reverb_effect, REVERB_TIME_INPUT_CONTROL, reverb_current_value, 64.0)
+	reverb_current_value = 64.0
+
+	update_tempo(360)

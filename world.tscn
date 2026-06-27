@@ -108,6 +108,21 @@ shader = ExtResource("8_gbfbk")
 shader_parameter/pixelation = 0.0010000000475
 shader_parameter/opacity = 1.0
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ioo17"]
+size = Vector2(656, 704)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wse8f"]
+size = Vector2(272, 96)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ic0uy"]
+size = Vector2(400, 224)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k3n1d"]
+size = Vector2(3024, 720)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gbfbk"]
+size = Vector2(464, 80)
+
 [sub_resource type="AudioStreamCsound" id="AudioStreamCsound_gbfbk"]
 
 [sub_resource type="AudioStreamLv2" id="AudioStreamLv2_wse8f"]
@@ -130,6 +145,12 @@ lv2_name = "space"
 
 [sub_resource type="AudioStreamLv2" id="AudioStreamLv2_70uel"]
 lv2_name = "bass2"
+
+[sub_resource type="AudioStreamLv2" id="AudioStreamLv2_hiqwa"]
+lv2_name = "reverb"
+
+[sub_resource type="AudioStreamLv2" id="AudioStreamLv2_2u3nc"]
+lv2_name = "equalizer"
 
 [node name="Node2D" type="Node2D" unique_id=2137336129]
 script = ExtResource("1_dwbse")
@@ -179,8 +200,44 @@ offset_bottom = 736.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="OutsideArea2D" type="Area2D" parent="." unique_id=303578421]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OutsideArea2D" unique_id=585538715]
+position = Vector2(328, 352)
+shape = SubResource("RectangleShape2D_ioo17")
+
+[node name="SmallRoomArea2D" type="Area2D" parent="." unique_id=1859022302]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SmallRoomArea2D" unique_id=1788720330]
+position = Vector2(792, 640)
+shape = SubResource("RectangleShape2D_wse8f")
+
+[node name="MediumRoomArea2D" type="Area2D" parent="." unique_id=955311334]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MediumRoomArea2D" unique_id=60445170]
+position = Vector2(1128, 592)
+shape = SubResource("RectangleShape2D_ic0uy")
+
+[node name="LargeRoomArea2D" type="Area2D" parent="." unique_id=1718654894]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LargeRoomArea2D" unique_id=1195015720]
+position = Vector2(2840, 360)
+shape = SubResource("RectangleShape2D_k3n1d")
+
+[node name="WaterArea2D" type="Area2D" parent="." unique_id=941263878]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WaterArea2D" unique_id=620981011]
+position = Vector2(2680, 680)
+shape = SubResource("RectangleShape2D_gbfbk")
+
 [node name="Player" parent="." unique_id=1198168635 instance=ExtResource("1_f3sb7")]
 position = Vector2(100, 670)
+collision_layer = 3
 high_jump_height = 150.0
 run_speed = 450.0
 
@@ -191,33 +248,56 @@ max_y = 734
 [node name="CsoundStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=331599848]
 stream = SubResource("AudioStreamCsound_gbfbk")
 autoplay = true
+bus = &"audio"
 
 [node name="GuitarSynthStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=216312690]
 stream = SubResource("AudioStreamLv2_wse8f")
 autoplay = true
+bus = &"audio"
 
 [node name="Bass1SynthStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=397577433]
 stream = SubResource("AudioStreamLv2_ic0uy")
 autoplay = true
+bus = &"audio"
 
 [node name="DirtyBassStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=2024652637]
 stream = SubResource("AudioStreamLv2_k3n1d")
 autoplay = true
+bus = &"audio"
 
 [node name="AtmosphereSynthStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1851914004]
 stream = SubResource("AudioStreamLv2_ioo17")
 autoplay = true
+bus = &"audio"
 
 [node name="AmbienceSynthStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=250991954]
 stream = SubResource("AudioStreamLv2_2o6r5")
 autoplay = true
+bus = &"audio"
 
 [node name="SpaceSynthStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=581098009]
 stream = SubResource("AudioStreamLv2_gbfbk")
 autoplay = true
+bus = &"audio"
 
 [node name="Bass2SynthStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=438879228]
 stream = SubResource("AudioStreamLv2_70uel")
 autoplay = true
+bus = &"audio"
+
+[node name="ReverbStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1047803976]
+stream = SubResource("AudioStreamLv2_hiqwa")
+autoplay = true
+bus = &"equalizer"
+
+[node name="EqualizerStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1192070084]
+stream = SubResource("AudioStreamLv2_2u3nc")
+autoplay = true
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="body_entered" from="OutsideArea2D" to="." method="_on_outside_area_2d_body_entered"]
+[connection signal="body_entered" from="SmallRoomArea2D" to="." method="_on_small_room_area_2d_body_entered"]
+[connection signal="body_entered" from="MediumRoomArea2D" to="." method="_on_medium_room_area_2d_body_entered"]
+[connection signal="body_entered" from="LargeRoomArea2D" to="." method="_on_large_room_area_2d_body_entered"]
+[connection signal="body_entered" from="WaterArea2D" to="." method="_on_water_area_2d_body_entered"]
+[connection signal="body_exited" from="WaterArea2D" to="." method="_on_water_area_2d_body_exited"]
