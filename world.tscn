@@ -123,6 +123,9 @@ size = Vector2(3024, 720)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gbfbk"]
 size = Vector2(464, 80)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2o6r5"]
+size = Vector2(336, 360)
+
 [sub_resource type="AudioStreamCsound" id="AudioStreamCsound_gbfbk"]
 
 [sub_resource type="AudioStreamLv2" id="AudioStreamLv2_wse8f"]
@@ -148,6 +151,9 @@ lv2_name = "bass2"
 
 [sub_resource type="AudioStreamLv2" id="AudioStreamLv2_hiqwa"]
 lv2_name = "reverb"
+
+[sub_resource type="AudioStreamLv2" id="AudioStreamLv2_udxuc"]
+lv2_name = "crusher"
 
 [sub_resource type="AudioStreamLv2" id="AudioStreamLv2_2u3nc"]
 lv2_name = "equalizer"
@@ -188,7 +194,14 @@ curve = SubResource("Curve2D_pkg7o")
 [node name="SpawnLocation" type="PathFollow2D" parent="SpawnPath" unique_id=156511442]
 position = Vector2(5738.2515, 35.60919)
 
-[node name="Timer" type="Timer" parent="." unique_id=55226664]
+[node name="SpawnTimer" type="Timer" parent="." unique_id=55226664]
+wait_time = 0.2
+
+[node name="GlitchTimer" type="Timer" parent="." unique_id=60546274]
+wait_time = 0.4
+
+[node name="brain" parent="." unique_id=625299191 instance=ExtResource("2_pkg7o")]
+position = Vector2(464, 696)
 
 [node name="Shader" type="ColorRect" parent="." unique_id=1989741648]
 material = SubResource("ShaderMaterial_ioo17")
@@ -234,6 +247,13 @@ collision_mask = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WaterArea2D" unique_id=620981011]
 position = Vector2(2680, 680)
 shape = SubResource("RectangleShape2D_gbfbk")
+
+[node name="EnemyArea2D" type="Area2D" parent="." unique_id=811812932]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyArea2D" unique_id=746108588]
+position = Vector2(4184, 536)
+shape = SubResource("RectangleShape2D_2o6r5")
 
 [node name="Player" parent="." unique_id=1198168635 instance=ExtResource("1_f3sb7")]
 position = Vector2(100, 670)
@@ -288,16 +308,24 @@ bus = &"audio"
 [node name="ReverbStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1047803976]
 stream = SubResource("AudioStreamLv2_hiqwa")
 autoplay = true
+bus = &"crusher"
+
+[node name="CrusherStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=446380724]
+stream = SubResource("AudioStreamLv2_udxuc")
+autoplay = true
 bus = &"equalizer"
 
 [node name="EqualizerStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1192070084]
 stream = SubResource("AudioStreamLv2_2u3nc")
 autoplay = true
 
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="SpawnTimer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="GlitchTimer" to="." method="_on_glitch_timer_timeout"]
 [connection signal="body_entered" from="OutsideArea2D" to="." method="_on_outside_area_2d_body_entered"]
 [connection signal="body_entered" from="SmallRoomArea2D" to="." method="_on_small_room_area_2d_body_entered"]
 [connection signal="body_entered" from="MediumRoomArea2D" to="." method="_on_medium_room_area_2d_body_entered"]
 [connection signal="body_entered" from="LargeRoomArea2D" to="." method="_on_large_room_area_2d_body_entered"]
 [connection signal="body_entered" from="WaterArea2D" to="." method="_on_water_area_2d_body_entered"]
 [connection signal="body_exited" from="WaterArea2D" to="." method="_on_water_area_2d_body_exited"]
+[connection signal="body_entered" from="EnemyArea2D" to="." method="_on_enemy_area_2d_body_entered"]
+[connection signal="brain_collision" from="Player" to="." method="_on_player_brain_collision"]

@@ -1,4 +1,5 @@
 extends CharacterBody2D
+class_name Player
 
 
 @export var high_jump_height: float
@@ -26,6 +27,9 @@ enum PlayerState { IDLE, WALKING, RUNNING, JUMPING, HIGH_JUMP, DUCKING }
 
 var previous_state: PlayerState
 var current_state: PlayerState = PlayerState.IDLE
+
+
+signal brain_collision
 
 
 func _ready():
@@ -138,6 +142,13 @@ func _physics_process(delta):
 
 	velocity.y += get_my_gravity() * delta
 
-	if move_and_slide():
-		pass
-		#handle_collisions()
+	move_and_slide()
+	handle_collisions()
+
+
+func handle_collisions():
+	for index in get_slide_collision_count():
+		var collision: KinematicCollision2D = get_slide_collision(index)
+		var _collider = collision.get_collider()
+		if collision.get_collider() is Brain:
+			brain_collision.emit()

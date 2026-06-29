@@ -5,6 +5,11 @@ forward_audio = false
 instance_name = "equalizer"
 resource_name = "SetLv2Channel"
 
+[sub_resource type="AudioEffectSetLv2Channel" id="AudioEffectSetLv2Channel_n8wo2"]
+forward_audio = false
+instance_name = "crusher"
+resource_name = "SetLv2Channel"
+
 [sub_resource type="AudioEffectSetLv2Channel" id="AudioEffectSetLv2Channel_j3pel"]
 forward_audio = false
 instance_name = "reverb"
@@ -19,11 +24,19 @@ bus/1/volume_db = 0.0
 bus/1/send = &"Master"
 bus/1/effect/0/effect = SubResource("AudioEffectSetLv2Channel_g28q7")
 bus/1/effect/0/enabled = true
-bus/2/name = &"audio"
+bus/2/name = &"crusher"
 bus/2/solo = false
 bus/2/mute = false
 bus/2/bypass_fx = false
 bus/2/volume_db = 0.0
 bus/2/send = &"Master"
-bus/2/effect/0/effect = SubResource("AudioEffectSetLv2Channel_j3pel")
+bus/2/effect/0/effect = SubResource("AudioEffectSetLv2Channel_n8wo2")
 bus/2/effect/0/enabled = true
+bus/3/name = &"audio"
+bus/3/solo = false
+bus/3/mute = false
+bus/3/bypass_fx = false
+bus/3/volume_db = 0.0
+bus/3/send = &"Master"
+bus/3/effect/0/effect = SubResource("AudioEffectSetLv2Channel_j3pel")
+bus/3/effect/0/enabled = true

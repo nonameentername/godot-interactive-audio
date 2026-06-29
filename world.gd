@@ -6,13 +6,25 @@ var random = RandomNumberGenerator.new()
 var brain_scene: PackedScene
 
 @onready
-var timer: Timer = $Timer
+var brain_spawn_timer: Timer = $SpawnTimer
+
+@onready
+var glitch_cooldown_timer: Timer = $GlitchTimer
 
 @onready
 var spawn_location: PathFollow2D = $SpawnPath/SpawnLocation
 
+@onready
+var shader: ColorRect = $Shader
+
+var number_of_brains = 0
+var allow_glitch: bool = true
+
 var water_eq_tween: Tween
 var reverb_current_value: int = 0
+
+var tempo_tween: Tween
+var current_tempo = 120
 
 var csound: CsoundInstance
 
@@ -24,9 +36,14 @@ var ambience_synth: Lv2Instance
 var space_synth: Lv2Instance
 var bass2_synth: Lv2Instance
 var reverb_effect: Lv2Instance
+var crusher: Lv2Instance
 var equalizer: Lv2Instance
 
 const REVERB_TIME_INPUT_CONTROL = 0
+
+const CRUSHER_DC_INPUT_CONTROL = 6
+const CRUSHER_BIT_REDUCTION_INPUT_CONTROL = 3
+const CRUSHER_ANTI_ALIASING_INPUT_CONTROL = 7
 
 const EQUALIZER_HS_ACTIVE_INPUT_CONTROL = 7
 const EQUALIZER_LEVEL_H_INPUT_CONTROL = 8
@@ -35,8 +52,6 @@ const EQUALIZER_FREQ_H_INPUT_CONTROL = 9
 func _ready():
 	CsoundServer.csound_layout_changed.connect(csound_layout_changed)
 	Lv2Server.lv2_ready.connect(_on_lv2_ready)
-
-	#timer.start()
 
 
 func csound_layout_changed():
@@ -84,6 +99,12 @@ func _on_lv2_ready(name: String):
 
 		#for preset in reverb_effect.get_presets():
 		#	print(preset)
+
+	if name == "crusher":
+		crusher = Lv2Server.get_instance(name)
+		crusher.send_input_control_channel(CRUSHER_DC_INPUT_CONTROL, 4)
+		crusher.send_input_control_channel(CRUSHER_BIT_REDUCTION_INPUT_CONTROL , 16)
+		crusher.send_input_control_channel(CRUSHER_ANTI_ALIASING_INPUT_CONTROL , 0)
 
 	if name == "equalizer":
 		equalizer = Lv2Server.get_instance(name)
@@ -146,12 +167,18 @@ func _on_midi_note_off(channel, note):
 
 
 func _on_timer_timeout() -> void:
+	if number_of_brains > 200:
+		brain_spawn_timer.stop()
+		return
+
 	spawn_location.progress_ratio = random.randf()
 	
 	var brain: Node2D = brain_scene.instantiate()
 	
 	add_child(brain)
 	move_child(brain, 7)
+
+	number_of_brains += 1
 
 	brain.global_position = spawn_location.global_position
 
@@ -170,6 +197,21 @@ func tween_control_channel(audio_plugin: Lv2Instance, control: int, from_value: 
 		to_value,
 		0.2
 	)
+
+
+func update_tempo(value):
+	if tempo_tween:
+		tempo_tween.kill()
+
+	tempo_tween = get_tree().create_tween()
+	tempo_tween.tween_method(
+		func(value): csound.event_string('i "update_tempo" 0 -1 %d' % value),
+		current_tempo,
+		value,
+		2.0
+	)
+
+	current_tempo = value
 
 
 func _on_water_area_2d_body_entered(body: Node2D) -> void:
@@ -194,15 +236,54 @@ func _on_medium_room_area_2d_body_entered(body: Node2D) -> void:
 	tween_control_channel(reverb_effect, REVERB_TIME_INPUT_CONTROL, reverb_current_value, 32.0)
 	reverb_current_value = 32.0
 
-	update_tempo(120)
-
-
-func update_tempo(value):
-	csound.event_string('i "update_tempo" 0 -1 %d' % value)
+	#update_tempo(120)
 
 
 func _on_large_room_area_2d_body_entered(body: Node2D) -> void:
 	tween_control_channel(reverb_effect, REVERB_TIME_INPUT_CONTROL, reverb_current_value, 64.0)
 	reverb_current_value = 64.0
 
+
+
+func _on_enemy_area_2d_body_entered(body: Node2D) -> void:
+	brain_spawn_timer.start()
+
 	update_tempo(360)
+
+
+func _on_player_brain_collision() -> void:
+	if not allow_glitch:
+		return
+
+	allow_glitch = false
+
+	var audio_tween = get_tree().create_tween()
+
+	audio_tween.tween_method(
+		func(value): crusher.send_input_control_channel(CRUSHER_BIT_REDUCTION_INPUT_CONTROL , value),
+		2.0,
+		1.0,
+		0.3
+	)
+
+	audio_tween.tween_method(
+		func(value): crusher.send_input_control_channel(CRUSHER_BIT_REDUCTION_INPUT_CONTROL , value),
+		1.0,
+		16.0,
+		0.1
+	)
+
+	glitch_cooldown_timer.start()
+
+	var pixelation_tween = get_tree().create_tween()
+
+	pixelation_tween.tween_method(
+		func(value): shader.material.set_shader_parameter("pixelation", value),
+		0.1,
+		0.001,
+		0.2
+	)
+
+
+func _on_glitch_timer_timeout() -> void:
+	allow_glitch = true
