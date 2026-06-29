@@ -49,6 +49,10 @@ const EQUALIZER_HS_ACTIVE_INPUT_CONTROL = 7
 const EQUALIZER_LEVEL_H_INPUT_CONTROL = 8
 const EQUALIZER_FREQ_H_INPUT_CONTROL = 9
 
+
+signal lv2_plugin_ready(name: String, default_preset: String)
+
+
 func _ready():
 	CsoundServer.csound_layout_changed.connect(csound_layout_changed)
 	Lv2Server.lv2_ready.connect(_on_lv2_ready)
@@ -61,33 +65,42 @@ func csound_layout_changed():
 
 
 func _on_lv2_ready(name: String):
+	var preset = ""
+
 	if name == "guitar":
+		preset = "BriansBank03: 055: Magic1"
 		guitar_synth = Lv2Server.get_instance(name)
-		guitar_synth.load_preset("BriansBank03: 055: Magic1")
+		guitar_synth.load_preset(preset)
 
 	if name == "bass1":
+		preset = "BriansBank01: 103: Peavey1"
 		bass1_synth = Lv2Server.get_instance(name)
-		bass1_synth.load_preset("BriansBank01: 103: Peavey1")
+		bass1_synth.load_preset(preset)
 
 	if name == "dirty_bass":
+		preset = "BriansBank05: 125: Oberbass3"
 		dirty_bass_synth = Lv2Server.get_instance(name)
-		dirty_bass_synth.load_preset("BriansBank05: 125: Oberbass3")
+		dirty_bass_synth.load_preset(preset)
 
 	if name == "atmosphere":
+		preset = "Fantasy: 0011-Space Choir1.xiz"
 		atmosphere_synth = Lv2Server.get_instance(name)
-		atmosphere_synth.load_preset("Fantasy: 0011-Space Choir1.xiz")
+		atmosphere_synth.load_preset(preset)
 
 	if name == "ambience":
+		preset = "BriansBank01: 081: LFO"
 		ambience_synth = Lv2Server.get_instance(name)
-		ambience_synth.load_preset("BriansBank01: 081: LFO")
+		ambience_synth.load_preset(preset)
 
 	if name == "space":
+		preset = "BriansBank01: 079: EPtremolo"
 		space_synth = Lv2Server.get_instance(name)
-		space_synth.load_preset("BriansBank01: 079: EPtremolo")
+		space_synth.load_preset(preset)
 
 	if name == "bass2":
+		preset = "BriansBank01: 032: basic"
 		bass2_synth = Lv2Server.get_instance(name)
-		bass2_synth.load_preset("BriansBank01: 032: basic")
+		bass2_synth.load_preset(preset)
 
 	if name == "reverb":
 		reverb_effect = Lv2Server.get_instance(name)
@@ -114,6 +127,8 @@ func _on_lv2_ready(name: String):
 
 		#for input_control in equalizer.get_input_controls():
 		#	print (input_control.name, " ", input_control.index)
+
+	lv2_plugin_ready.emit(name, preset)
 
 
 func _on_midi_note_on(channel, note, velocity):

@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://bwndob7pgl55e"]
+
+[ext_resource type="Script" path="res://lv2_control_dropdown.gd" id="1_f22e8"]
+
+[node name="lv2_control_dropdown" type="HBoxContainer" unique_id=2012822487]
+offset_right = 1.0
+offset_bottom = 23.0
+script = ExtResource("1_f22e8")
+
+[node name="Label" type="Label" parent="." unique_id=1263814607]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+horizontal_alignment = 2
+
+[node name="OptionButton" type="OptionButton" parent="." unique_id=2120139383]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+
+[connection signal="item_selected" from="OptionButton" to="." method="_on_option_button_item_selected"]

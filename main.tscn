@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://cd4tr6o8jjyc7"]
+
+[ext_resource type="Script" uid="uid://bj7wmqnc1o18i" path="res://main.gd" id="1_0xm2m"]
+[ext_resource type="PackedScene" uid="uid://3ofuqor8abad" path="res://world.tscn" id="1_ig7tw"]
+
+[node name="Node2D" type="Node2D" unique_id=1986380624]
+script = ExtResource("1_0xm2m")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=835353250]
+offset_right = 1920.0
+offset_bottom = 1104.0
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=509284531]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(1152, 648)
+size_2d_override = Vector2i(640, 360)
+size_2d_override_stretch = true
+render_target_update_mode = 4
+
+[node name="Node2D" parent="SubViewportContainer/SubViewport" unique_id=2137336129 instance=ExtResource("1_ig7tw")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1245921356]
+visible = false
+
+[node name="TabContainer" type="TabContainer" parent="CanvasLayer" unique_id=355236604]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[connection signal="lv2_plugin_ready" from="SubViewportContainer/SubViewport/Node2D" to="." method="_on_node_2d_lv_2_plugin_ready"]

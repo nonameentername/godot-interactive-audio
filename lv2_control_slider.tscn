@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://dsvnaebdajgkf"]
+
+[ext_resource type="Script" path="res://lv2_control_slider.gd" id="1_rren8"]
+
+[node name="lv2_control_slider" type="HBoxContainer" unique_id=554221141]
+script = ExtResource("1_rren8")
+
+[node name="Label" type="Label" parent="." unique_id=1222052087]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+horizontal_alignment = 2
+
+[node name="HSlider" type="HSlider" parent="." unique_id=412083758]
+custom_minimum_size = Vector2(200, 32)
+layout_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="." unique_id=1251995874]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[connection signal="value_changed" from="HSlider" to="." method="_on_h_slider_value_changed"]
+[connection signal="focus_exited" from="LineEdit" to="." method="_on_line_edit_focus_exited"]
+[connection signal="text_submitted" from="LineEdit" to="." method="_on_line_edit_text_submitted"]

@@ -159,6 +159,7 @@ lv2_name = "crusher"
 lv2_name = "equalizer"
 
 [node name="Node2D" type="Node2D" unique_id=2137336129]
+texture_filter = 1
 script = ExtResource("1_dwbse")
 brain_scene = ExtResource("2_pkg7o")
 
