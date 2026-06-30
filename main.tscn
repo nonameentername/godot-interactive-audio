@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bj7wmqnc1o18i" path="res://main.gd" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://3ofuqor8abad" path="res://world.tscn" id="1_ig7tw"]
+[ext_resource type="PackedScene" uid="uid://bn0spvt215pxy" path="res://piano.tscn" id="3_h2yge"]
 
 [node name="Node2D" type="Node2D" unique_id=1986380624]
 script = ExtResource("1_0xm2m")
@@ -23,11 +24,18 @@ render_target_update_mode = 4
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1245921356]
 visible = false
 
-[node name="TabContainer" type="TabContainer" parent="CanvasLayer" unique_id=355236604]
-anchors_preset = 15
+[node name="Panel" type="Panel" parent="CanvasLayer" unique_id=881797595]
+anchors_preset = 10
 anchor_right = 1.0
-anchor_bottom = 1.0
+offset_bottom = 72.0
 grow_horizontal = 2
-grow_vertical = 2
+
+[node name="Piano" parent="CanvasLayer/Panel" unique_id=1839624044 instance=ExtResource("3_h2yge")]
+layout_mode = 1
+
+[node name="TabContainer" type="TabContainer" parent="CanvasLayer" unique_id=355236604]
+offset_top = 72.0
+offset_right = 1152.0
+offset_bottom = 648.0
 
 [connection signal="lv2_plugin_ready" from="SubViewportContainer/SubViewport/Node2D" to="." method="_on_node_2d_lv_2_plugin_ready"]
