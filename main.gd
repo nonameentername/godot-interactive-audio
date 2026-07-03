@@ -18,7 +18,7 @@ var ui_visible
 var current_tempo = 120
 var slider_drag = false
 var csound_playing = true
-var current_position: int = 0
+var current_position: float = 0
 
 
 func _ready() -> void:
@@ -48,8 +48,8 @@ func _physics_process(delta):
 		var csound = CsoundServer.get_csound("Main")
 		if csound:
 			var time = csound.get_control_channel("time")
-			slider.value = time
-			current_position = time
+			current_position = seconds_to_beat(time, current_tempo)
+			slider.value = current_position
 
 
 func _on_node_2d_lv_2_plugin_ready(name: String, default_preset: String) -> void:
@@ -102,9 +102,8 @@ func _on_panic_button_pressed() -> void:
 
 
 func _on_play_button_pressed() -> void:
-	var saved_current_position = current_position
 	world.playback_start()
-	world.set_score_position(saved_current_position)
+	world.set_score_position(beat_to_seconds(current_position, current_tempo))
 	csound_playing = true
 
 
@@ -114,12 +113,18 @@ func _on_stop_button_pressed() -> void:
 
 
 func _on_h_slider_drag_started() -> void:
-	if not csound_playing:
-		slider_drag = true
+	slider_drag = true
 
 
 func _on_h_slider_drag_ended(value_changed: bool) -> void:
-	if not csound_playing:
-		current_position = slider.value
-		world.set_score_position(current_position)
+	current_position = slider.value
+	world.set_score_position(beat_to_seconds(current_position, current_tempo))
 	slider_drag = false
+
+
+func beat_to_seconds(beat: float, bpm: float) -> float:
+	return beat * 60.0 / bpm
+
+
+func seconds_to_beat(seconds: float, bpm: float) -> float:
+	return seconds * bpm / 60.0

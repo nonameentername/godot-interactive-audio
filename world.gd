@@ -242,10 +242,11 @@ func playback_stop():
 
 func playback_start():
 	csound_player.playing = true
+	csound.evaluate_code("rewindscore")
 
 
-func set_score_position(value):
-	csound.event_string('i "marker" 0 0 %d' % value)
+func set_score_position(value: float):
+	csound.evaluate_code("setscorepos %f" % value)
 
 
 func _on_water_area_2d_body_entered(body: Node2D) -> void:
