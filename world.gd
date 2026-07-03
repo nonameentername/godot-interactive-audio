@@ -1,4 +1,5 @@
 extends Node2D
+class_name World
 
 var random = RandomNumberGenerator.new()
 
@@ -16,6 +17,9 @@ var spawn_location: PathFollow2D = $SpawnPath/SpawnLocation
 
 @onready
 var shader: ColorRect = $Shader
+
+@onready
+var csound_player: AudioStreamPlayer = $CsoundStreamPlayer
 
 var number_of_brains = 0
 var allow_glitch: bool = true
@@ -38,6 +42,8 @@ var bass2_synth: Lv2Instance
 var reverb_effect: Lv2Instance
 var crusher: Lv2Instance
 var equalizer: Lv2Instance
+
+const SYNTH_PORTAMENTO_TIME_INPUT_CONTROL = 31
 
 const REVERB_TIME_INPUT_CONTROL = 0
 
@@ -101,6 +107,7 @@ func _on_lv2_ready(name: String):
 		preset = "BriansBank01: 032: basic"
 		bass2_synth = Lv2Server.get_instance(name)
 		bass2_synth.load_preset(preset)
+		bass2_synth.send_input_control_channel(SYNTH_PORTAMENTO_TIME_INPUT_CONTROL, 0.5)
 
 	if name == "reverb":
 		reverb_effect = Lv2Server.get_instance(name)
@@ -220,13 +227,25 @@ func update_tempo(value):
 
 	tempo_tween = get_tree().create_tween()
 	tempo_tween.tween_method(
-		func(value): csound.event_string('i "update_tempo" 0 -1 %d' % value),
+		func(value): csound.send_control_channel("tempo", value),
 		current_tempo,
 		value,
 		2.0
 	)
 
 	current_tempo = value
+
+
+func playback_stop():
+	csound_player.playing = false
+
+
+func playback_start():
+	csound_player.playing = true
+
+
+func set_score_position(value):
+	csound.event_string('i "marker" 0 0 %d' % value)
 
 
 func _on_water_area_2d_body_entered(body: Node2D) -> void:

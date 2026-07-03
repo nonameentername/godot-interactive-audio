@@ -74,15 +74,20 @@ endin
 
 
 instr marker, 8
-  setscorepos 0
+  setscorepos p4
 endin
+
 
 iTempo = 120
 tempo iTempo, 120
 
-instr update_tempo
-  iTempo = p4
-  tempo iTempo, 120
+instr update_tempo, 100
+  kTempo init 120
+  kTempo chnget "tempo"
+  tempo kTempo, 120
+
+  kCurrentTime times
+  chnset kCurrentTime, "time"
 endin
 
 </CsInstruments>
@@ -102,6 +107,7 @@ t 0 120
 ; marker 8
 ; bass2 9
 
+i 100 0 -1
 i 1.00036 100.0 -1 36 88
 i -1.00036 102.0 0 36 0
 i 1.00038 102.0 -1 38 110
@@ -908,7 +914,7 @@ i 7.00045 188.0 -1 45 54
 i -7.00045 192.0 0 45 0
 i 7.00040 192.0 -1 40 55
 i -7.00040 196.0 0 40 0
-i 8.00033 292.0 0 33 83
+i 8.00033 292.0 0 0
 i 9.00045 196.0 -1 45 82
 i -9.00045 203.72291666666666 0 45 0
 i 9.00045 236.10625 -1 45 79
