@@ -66,6 +66,8 @@ func _on_node_2d_lv_2_plugin_ready(name: String, default_preset: String) -> void
 		dropdown.add_item(preset)
 
 	var popup_menu: PopupMenu = dropdown.get_popup()
+	popup_menu.search_bar_enabled = true
+
 	for i in popup_menu.get_item_count():
 		if popup_menu.is_item_radio_checkable(i):
 			popup_menu.set_item_as_radio_checkable(i, false)
