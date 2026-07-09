@@ -21,6 +21,9 @@ var shader: ColorRect = $Shader
 @onready
 var csound_player: AudioStreamPlayer = $CsoundStreamPlayer
 
+@onready
+var player: Player = $Player
+
 var number_of_brains = 0
 var allow_glitch: bool = true
 
@@ -47,6 +50,7 @@ var crusher: Lv2Instance
 var equalizer: Lv2Instance
 
 const SYNTH_VOLUME_INPUT_CONTROL = 14
+const SYNTH_LFO_FREQ_INPUT_CONTROL = 15
 const SYNTH_PORTAMENTO_TIME_INPUT_CONTROL = 31
 
 const REVERB_TIME_INPUT_CONTROL = 0
@@ -66,6 +70,13 @@ signal lv2_plugin_ready(name: String, default_preset: String)
 func _ready():
 	CsoundServer.csound_layout_changed.connect(csound_layout_changed)
 	Lv2Server.lv2_ready.connect(_on_lv2_ready)
+
+
+func _process(delta: float) -> void:
+	var position: float = 2 + ((int(player.position.x) % 128) / 128.0)
+	
+	if not synth_active["guitar"]:
+		dirty_bass_synth.send_input_control_channel(SYNTH_LFO_FREQ_INPUT_CONTROL, position)
 
 
 func csound_layout_changed():
@@ -323,6 +334,8 @@ func _on_large_room_area_2d_body_entered(body: Node2D) -> void:
 	synth_active["bass1"] = true
 	synth_active["bass2"] = true
 	synth_active["guitar"] = true
+
+	dirty_bass_synth.send_input_control_channel(SYNTH_LFO_FREQ_INPUT_CONTROL, 2.72)
 
 	tween_control_channel(reverb_effect, REVERB_TIME_INPUT_CONTROL, reverb_current_value, 64.0)
 	reverb_current_value = 64.0
