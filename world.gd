@@ -32,6 +32,9 @@ var current_tempo = 120
 
 var csound: CsoundInstance
 
+var lv2_plugins = {}
+var synth_active = {}
+
 var guitar_synth: Lv2Instance
 var bass1_synth: Lv2Instance
 var dirty_bass_synth: Lv2Instance
@@ -43,6 +46,7 @@ var reverb_effect: Lv2Instance
 var crusher: Lv2Instance
 var equalizer: Lv2Instance
 
+const SYNTH_VOLUME_INPUT_CONTROL = 14
 const SYNTH_PORTAMENTO_TIME_INPUT_CONTROL = 31
 
 const REVERB_TIME_INPUT_CONTROL = 0
@@ -73,41 +77,53 @@ func csound_layout_changed():
 func _on_lv2_ready(name: String):
 	var preset = ""
 
+	synth_active[name] = false
+
 	if name == "guitar":
 		preset = "BriansBank03: 055: Magic1"
 		guitar_synth = Lv2Server.get_instance(name)
 		guitar_synth.load_preset(preset)
+		lv2_plugins[name] = guitar_synth
 
 	if name == "bass1":
 		preset = "BriansBank01: 103: Peavey1"
 		bass1_synth = Lv2Server.get_instance(name)
 		bass1_synth.load_preset(preset)
+		lv2_plugins[name] = bass1_synth
 
 	if name == "dirty_bass":
 		preset = "BriansBank05: 125: Oberbass3"
 		dirty_bass_synth = Lv2Server.get_instance(name)
 		dirty_bass_synth.load_preset(preset)
+		lv2_plugins[name] = dirty_bass_synth
 
 	if name == "atmosphere":
 		preset = "Fantasy: 0011-Space Choir1.xiz"
 		atmosphere_synth = Lv2Server.get_instance(name)
 		atmosphere_synth.load_preset(preset)
+		lv2_plugins[name] = atmosphere_synth
+		synth_active[name] = true
 
 	if name == "ambience":
 		preset = "BriansBank01: 081: LFO"
 		ambience_synth = Lv2Server.get_instance(name)
 		ambience_synth.load_preset(preset)
+		lv2_plugins[name] = ambience_synth
+		synth_active[name] = true
 
 	if name == "space":
 		preset = "BriansBank01: 079: EPtremolo"
 		space_synth = Lv2Server.get_instance(name)
 		space_synth.load_preset(preset)
+		lv2_plugins[name] = space_synth
+		synth_active[name] = true
 
 	if name == "bass2":
 		preset = "BriansBank01: 032: basic"
 		bass2_synth = Lv2Server.get_instance(name)
 		bass2_synth.load_preset(preset)
 		bass2_synth.send_input_control_channel(SYNTH_PORTAMENTO_TIME_INPUT_CONTROL, 0.5)
+		lv2_plugins[name] = bass2_synth
 
 	if name == "reverb":
 		reverb_effect = Lv2Server.get_instance(name)
@@ -141,25 +157,25 @@ func _on_lv2_ready(name: String):
 func _on_midi_note_on(channel, note, velocity):
 	#print("Note On: channel: ", channel, " note: ", note, " velocity: ", velocity)
 
-	if guitar_synth and channel == 1:
+	if guitar_synth and channel == 1 and synth_active["guitar"]:
 		guitar_synth.note_on(0, 0, note, velocity)
 
-	if bass1_synth and channel == 2:
+	if bass1_synth and channel == 2 and synth_active["bass1"]:
 		bass1_synth.note_on(0, 0, note, velocity)
 
-	if dirty_bass_synth and channel == 3:
+	if dirty_bass_synth and channel == 3 and synth_active["dirty_bass"]:
 		dirty_bass_synth.note_on(0, 0, note, velocity)
 
-	if atmosphere_synth and channel == 4:
+	if atmosphere_synth and channel == 4 and synth_active["atmosphere"]:
 		atmosphere_synth.note_on(0, 0, note, velocity)
 
-	if ambience_synth and channel == 5:
+	if ambience_synth and channel == 5 and synth_active["ambience"]:
 		ambience_synth.note_on(0, 0, note, velocity)
 
-	if space_synth and channel == 6:
+	if space_synth and channel == 6 and synth_active["space"]:
 		space_synth.note_on(0, 0, note, velocity)
 
-	if bass2_synth and channel == 8:
+	if bass2_synth and channel == 8 and synth_active["bass2"]:
 		bass2_synth.note_on(0, 0, note, velocity)
 
 
@@ -245,12 +261,21 @@ func playback_start():
 	csound.evaluate_code("rewindscore")
 
 
+
+func set_drums_enabled(value: bool):
+	if value:
+		csound.send_control_channel("play_drums", 1)
+	else:
+		csound.send_control_channel("play_drums", 0)
+
+
 func set_score_position(value: float):
 	csound.evaluate_code("setscorepos %f" % value)
 
 
 func _on_water_area_2d_body_entered(body: Node2D) -> void:
 	tween_control_channel(equalizer, EQUALIZER_LEVEL_H_INPUT_CONTROL, 1.0, 0.2)
+	update_tempo(120)
 
 
 func _on_water_area_2d_body_exited(body: Node2D) -> void:
@@ -258,26 +283,49 @@ func _on_water_area_2d_body_exited(body: Node2D) -> void:
 
 
 func _on_outside_area_2d_body_entered(body: Node2D) -> void:
+	synth_active["dirty_bass"] = false
+	dirty_bass_synth.send_input_control_channel(SYNTH_VOLUME_INPUT_CONTROL, 0)
+	set_drums_enabled(false)
+
 	tween_control_channel(reverb_effect, REVERB_TIME_INPUT_CONTROL, reverb_current_value, 0.0)
 	reverb_current_value = 0.0
 
 
 func _on_small_room_area_2d_body_entered(body: Node2D) -> void:
+	synth_active["atmosphere"] = true
+	synth_active["ambience"] = true
+	synth_active["space"] = true
+
+	if not synth_active["dirty_bass"]:
+		synth_active["dirty_bass"] = true
+		dirty_bass_synth.send_input_control_channel(SYNTH_VOLUME_INPUT_CONTROL, 1)
+		set_drums_enabled(true)
+		set_score_position(0)
+
 	tween_control_channel(reverb_effect, REVERB_TIME_INPUT_CONTROL, reverb_current_value, 16.0)
 	reverb_current_value = 16.0
 
 
 func _on_medium_room_area_2d_body_entered(body: Node2D) -> void:
+	synth_active["atmosphere"] = false
+	synth_active["ambience"] = false
+	synth_active["space"] = false
+
+	synth_active["bass1"] = false
+	synth_active["bass2"] = false
+	synth_active["guitar"] = false
+
 	tween_control_channel(reverb_effect, REVERB_TIME_INPUT_CONTROL, reverb_current_value, 32.0)
 	reverb_current_value = 32.0
 
-	#update_tempo(120)
-
 
 func _on_large_room_area_2d_body_entered(body: Node2D) -> void:
+	synth_active["bass1"] = true
+	synth_active["bass2"] = true
+	synth_active["guitar"] = true
+
 	tween_control_channel(reverb_effect, REVERB_TIME_INPUT_CONTROL, reverb_current_value, 64.0)
 	reverb_current_value = 64.0
-
 
 
 func _on_enemy_area_2d_body_entered(body: Node2D) -> void:

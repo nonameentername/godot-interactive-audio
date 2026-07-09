@@ -109,16 +109,16 @@ shader_parameter/pixelation = 0.0010000000475
 shader_parameter/opacity = 1.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ioo17"]
-size = Vector2(656, 704)
+size = Vector2(640, 704)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wse8f"]
 size = Vector2(272, 96)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ic0uy"]
-size = Vector2(400, 224)
+size = Vector2(392, 224)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k3n1d"]
-size = Vector2(3024, 720)
+size = Vector2(3016, 720)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gbfbk"]
 size = Vector2(464, 80)
@@ -211,7 +211,8 @@ material = SubResource("ShaderMaterial_ioo17")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 4368.0
+offset_left = -8.0
+offset_right = 4360.0
 offset_bottom = 736.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -220,7 +221,7 @@ grow_vertical = 2
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="OutsideArea2D" unique_id=585538715]
-position = Vector2(328, 352)
+position = Vector2(320, 352)
 shape = SubResource("RectangleShape2D_ioo17")
 
 [node name="SmallRoomArea2D" type="Area2D" parent="." unique_id=1859022302]
@@ -234,14 +235,14 @@ shape = SubResource("RectangleShape2D_wse8f")
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MediumRoomArea2D" unique_id=60445170]
-position = Vector2(1128, 592)
+position = Vector2(1124, 592)
 shape = SubResource("RectangleShape2D_ic0uy")
 
 [node name="LargeRoomArea2D" type="Area2D" parent="." unique_id=1718654894]
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LargeRoomArea2D" unique_id=1195015720]
-position = Vector2(2840, 360)
+position = Vector2(2844, 360)
 shape = SubResource("RectangleShape2D_k3n1d")
 
 [node name="WaterArea2D" type="Area2D" parent="." unique_id=941263878]
