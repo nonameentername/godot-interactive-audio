@@ -1,5 +1,8 @@
 [gd_resource type="AudioBusLayout" format=3 uid="uid://bwghukn2i8osp"]
 
+[sub_resource type="AudioEffectSpectrumAnalyzer" id="AudioEffectSpectrumAnalyzer_j3pel"]
+resource_name = "SpectrumAnalyzer"
+
 [sub_resource type="AudioEffectSetLv2Channel" id="AudioEffectSetLv2Channel_g28q7"]
 forward_audio = false
 instance_name = "equalizer"
@@ -16,6 +19,8 @@ instance_name = "reverb"
 resource_name = "SetLv2Channel"
 
 [resource]
+bus/0/effect/0/effect = SubResource("AudioEffectSpectrumAnalyzer_j3pel")
+bus/0/effect/0/enabled = true
 bus/1/name = &"equalizer"
 bus/1/solo = false
 bus/1/mute = false

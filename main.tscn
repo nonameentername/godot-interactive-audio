@@ -2,7 +2,8 @@
 
 [ext_resource type="Script" uid="uid://bj7wmqnc1o18i" path="res://main.gd" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://3ofuqor8abad" path="res://world.tscn" id="1_ig7tw"]
-[ext_resource type="PackedScene" uid="uid://bn0spvt215pxy" path="res://piano.tscn" id="3_h2yge"]
+[ext_resource type="PackedScene" uid="uid://c2iwgtjje05p" path="res://addons/synths/amsynth.tscn" id="3_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://dctcehelc4sv0" path="res://addons/synths/piano.tscn" id="4_1bvp3"]
 
 [node name="Node2D" type="Node2D" unique_id=1986380624]
 script = ExtResource("1_0xm2m")
@@ -94,14 +95,29 @@ anchor_bottom = 1.0
 offset_top = 128.0
 grow_horizontal = 2
 grow_vertical = 2
+current_tab = 0
 
-[node name="Piano" parent="CanvasLayer/Control" unique_id=1839624044 instance=ExtResource("3_h2yge")]
+[node name="Csound" type="TabBar" parent="CanvasLayer/Control/TabContainer" unique_id=37234007]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Control/TabContainer/Csound" unique_id=1525695970]
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 489.0
+color = Color(0.21960784, 0.21960784, 0.21960784, 1)
+
+[node name="amsynth" parent="CanvasLayer/Control/TabContainer/Csound" unique_id=1979931238 instance=ExtResource("3_1bvp3")]
+layout_mode = 0
+instrument_name = "one"
+instrument_channel = 1
+csound_name = "amsynth"
+
+[node name="Piano" parent="CanvasLayer/Control" unique_id=1839624044 instance=ExtResource("4_1bvp3")]
 layout_mode = 1
 anchors_preset = -1
-anchor_bottom = 0.437
-offset_bottom = -219.176
-grow_horizontal = 1
-grow_vertical = 1
+anchor_bottom = 0.09900001
+offset_bottom = -0.15200806
 
 [connection signal="lv2_plugin_ready" from="SubViewportContainer/SubViewport/Node2D" to="." method="_on_node_2d_lv_2_plugin_ready"]
 [connection signal="pressed" from="CanvasLayer/Control/Panel/PanicButton" to="." method="_on_panic_button_pressed"]
@@ -110,3 +126,4 @@ grow_vertical = 1
 [connection signal="drag_ended" from="CanvasLayer/Control/Panel/HSlider" to="." method="_on_h_slider_drag_ended"]
 [connection signal="drag_started" from="CanvasLayer/Control/Panel/HSlider" to="." method="_on_h_slider_drag_started"]
 [connection signal="value_changed" from="CanvasLayer/Control/Panel/TempoSpinBox" to="." method="_on_tempo_spin_box_value_changed"]
+[connection signal="parameter_changed" from="CanvasLayer/Control/TabContainer/Csound/amsynth" to="." method="_on_amsynth_parameter_changed"]

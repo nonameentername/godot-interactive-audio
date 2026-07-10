@@ -128,6 +128,9 @@ size = Vector2(336, 360)
 
 [sub_resource type="AudioStreamCsound" id="AudioStreamCsound_gbfbk"]
 
+[sub_resource type="AudioStreamCsound" id="AudioStreamCsound_jkhly"]
+csound_name = "amsynth"
+
 [sub_resource type="AudioStreamLv2" id="AudioStreamLv2_ikiii"]
 
 [sub_resource type="AudioStreamLv2" id="AudioStreamLv2_wse8f"]
@@ -271,6 +274,11 @@ max_y = 734
 
 [node name="CsoundStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=331599848]
 stream = SubResource("AudioStreamCsound_gbfbk")
+autoplay = true
+bus = &"audio"
+
+[node name="CsoundSynthStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1352538902]
+stream = SubResource("AudioStreamCsound_jkhly")
 autoplay = true
 bus = &"audio"
 

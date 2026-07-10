@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bwndob7pgl55e"]
 
-[ext_resource type="Script" path="res://lv2_control_dropdown.gd" id="1_f22e8"]
+[ext_resource type="Script" uid="uid://ygee8sb5j5dw" path="res://lv2_control_dropdown.gd" id="1_f22e8"]
 
 [node name="lv2_control_dropdown" type="HBoxContainer" unique_id=2012822487]
 offset_right = 1.0

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dsvnaebdajgkf"]
 
-[ext_resource type="Script" path="res://lv2_control_slider.gd" id="1_rren8"]
+[ext_resource type="Script" uid="uid://dn83b64gppoui" path="res://lv2_control_slider.gd" id="1_rren8"]
 
 [node name="lv2_control_slider" type="HBoxContainer" unique_id=554221141]
 script = ExtResource("1_rren8")

@@ -10,9 +10,9 @@
 addons/csound
 addons/lv2-host
 addons/vst3-host
+addons/synths
 build
 build-log.txt
 compile_commands.json
-addons
 presets
 .plugged
