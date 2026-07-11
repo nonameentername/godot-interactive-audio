@@ -109,9 +109,23 @@ color = Color(0.21960784, 0.21960784, 0.21960784, 1)
 
 [node name="amsynth" parent="CanvasLayer/Control/TabContainer/Csound" unique_id=1979931238 instance=ExtResource("3_1bvp3")]
 layout_mode = 0
-instrument_name = "one"
-instrument_channel = 1
+offset_top = 40.0
+offset_bottom = 40.0
 csound_name = "amsynth"
+
+[node name="CsoundOptionButton" type="OptionButton" parent="CanvasLayer/Control/TabContainer/Csound" unique_id=13970886]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 9.0
+offset_right = 448.0
+offset_bottom = 41.0
+selected = 0
+search_bar_enabled = true
+item_count = 2
+popup/item_0/text = "synth"
+popup/item_0/id = 0
+popup/item_1/text = "jump"
+popup/item_1/id = 1
 
 [node name="Piano" parent="CanvasLayer/Control" unique_id=1839624044 instance=ExtResource("4_1bvp3")]
 layout_mode = 1
@@ -127,3 +141,4 @@ offset_bottom = -0.15200806
 [connection signal="drag_started" from="CanvasLayer/Control/Panel/HSlider" to="." method="_on_h_slider_drag_started"]
 [connection signal="value_changed" from="CanvasLayer/Control/Panel/TempoSpinBox" to="." method="_on_tempo_spin_box_value_changed"]
 [connection signal="parameter_changed" from="CanvasLayer/Control/TabContainer/Csound/amsynth" to="." method="_on_amsynth_parameter_changed"]
+[connection signal="item_selected" from="CanvasLayer/Control/TabContainer/Csound/CsoundOptionButton" to="." method="_on_csound_option_button_item_selected"]

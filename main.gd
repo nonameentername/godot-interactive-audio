@@ -13,6 +13,14 @@ var world: World = $SubViewportContainer/SubViewport/Node2D
 @onready
 var slider: HSlider = $CanvasLayer/Control/Panel/HSlider
 
+@onready
+var option_button: OptionButton = $CanvasLayer/Control/TabContainer/Csound/CsoundOptionButton
+
+@onready
+var amsynth: ASynth = $CanvasLayer/Control/TabContainer/Csound/amsynth
+
+var csound_synth: CsoundInstance
+
 var lv2_editor_scene
 var ui_visible
 var current_tempo = 120
@@ -23,56 +31,71 @@ var csound_parameters: Array[String]
 
 
 func _ready() -> void:
+	CsoundServer.csound_ready.connect(_on_csound_ready)
+
 	lv2_editor_scene = preload("res://lv2_editor.tscn")
 
 	OS.open_midi_inputs()
 	print(OS.get_connected_midi_inputs())
 
-
 	csound_parameters = [
-		"one.ASynthOsc.1.osc_waveform",
-		"one.ASynthOsc.1.osc_pulsewidth",
-		"one.ASynthOsc.1.osc_sync",
-		"one.ASynthDetune.1.osc_range",
-		"one.ASynthDetune.1.osc_pitch",
-		"one.ASynthDetune.1.osc_detune",
-		"one.ASynthOsc.2.osc_waveform",
-		"one.ASynthOsc.2.osc_pulsewidth",
-		"one.ASynthOsc.2.osc_sync",
-		"one.ASynthDetune.2.osc_range",
-		"one.ASynthDetune.2.osc_pitch",
-		"one.ASynthDetune.2.osc_detune",
-		"one.ASynthAmp.1.amp_attack",
-		"one.ASynthAmp.1.amp_decay",
-		"one.ASynthAmp.1.amp_sustain",
-		"one.ASynthAmp.1.amp_release",
-		"one.ASynthMix.1.osc_mix",
-		"one.ASynthMix.1.osc_mix_mode",
-		"one.ASynthRender.1.master_vol",
-		"one.ASynthOverDrive.1.distortion_crunch",
-		"one.ASynthFilter.1.filter_type",
-		"one.ASynthFilter.1.filter_resonance",
-		"one.ASynthFilter.1.filter_cutoff",
-		"one.ASynthFilter.1.filter_kbd_track",
-		"one.ASynthFilter.1.filter_env_amount",
-		"one.ASynthFilter.1.filter_attack",
-		"one.ASynthFilter.1.filter_decay",
-		"one.ASynthFilter.1.filter_sustain",
-		"one.ASynthFilter.1.filter_release",
-		"one.ASynthLfo.1.lfo_waveform",
-		"one.ASynthLfo.1.lfo_freq",
-		"one.ASynthLfoFreq.1.freq_mod_amount",
-		"one.ASynthLfoFreq.2.freq_mod_amount",
-		"one.ASynthFilter.1.filter_mod_amount",
-		"one.ASynthAmp.1.amp_mod_amount",
-		"one.ASynthReverb.1.reverb_wet",
-		"one.ASynthReverb.1.reverb_roomsize",
-		"one.ASynthReverb.1.reverb_width",
-		"one.ASynthReverb.1.reverb_damp",
-		"one.ASynthInput.1.portamento_time",
-		"one.ASynthInput.1.portamento_mode",
-		"one.ASynthInput.1.keyboard_mode"
+		"ASynthOsc.1.osc_waveform",
+		"ASynthOsc.1.osc_pulsewidth",
+		"ASynthOsc.1.osc_sync",
+		"ASynthDetune.1.osc_range",
+		"ASynthDetune.1.osc_pitch",
+		"ASynthDetune.1.osc_detune",
+		"ASynthOsc.2.osc_waveform",
+		"ASynthOsc.2.osc_pulsewidth",
+		"ASynthOsc.2.osc_sync",
+		"ASynthDetune.2.osc_range",
+		"ASynthDetune.2.osc_pitch",
+		"ASynthDetune.2.osc_detune",
+		"ASynthAmp.1.amp_attack",
+		"ASynthAmp.1.amp_decay",
+		"ASynthAmp.1.amp_sustain",
+		"ASynthAmp.1.amp_release",
+		"ASynthMix.1.osc_mix",
+		"ASynthMix.1.osc_mix_mode",
+		"ASynthRender.1.master_vol",
+		"ASynthOverDrive.1.distortion_crunch",
+		"ASynthFilter.1.filter_type",
+		"ASynthFilter.1.filter_resonance",
+		"ASynthFilter.1.filter_cutoff",
+		"ASynthFilter.1.filter_kbd_track",
+		"ASynthFilter.1.filter_env_amount",
+		"ASynthFilter.1.filter_attack",
+		"ASynthFilter.1.filter_decay",
+		"ASynthFilter.1.filter_sustain",
+		"ASynthFilter.1.filter_release",
+		"ASynthLfo.1.lfo_waveform",
+		"ASynthLfo.1.lfo_freq",
+		"ASynthLfoFreq.1.freq_mod_amount",
+		"ASynthLfoFreq.2.freq_mod_amount",
+		"ASynthFilter.1.filter_mod_amount",
+		"ASynthAmp.1.amp_mod_amount",
+		"ASynthReverb.1.reverb_wet",
+		"ASynthReverb.1.reverb_roomsize",
+		"ASynthReverb.1.reverb_width",
+		"ASynthReverb.1.reverb_damp",
+		"ASynthInput.1.portamento_time",
+		"ASynthInput.1.portamento_mode",
+		"ASynthInput.1.keyboard_mode"
 	]
+
+	var popup_menu: PopupMenu = option_button.get_popup()
+	for i in popup_menu.get_item_count():
+		if popup_menu.is_item_radio_checkable(i):
+			popup_menu.set_item_as_radio_checkable(i, false)
+
+
+func _on_csound_ready(name: String):
+	if name == "amsynth":
+		csound_synth = CsoundServer.get_csound(name)
+		option_button.selected = 1
+		#amsynth.load_preset("presets/BadPig.json")
+		amsynth.load_preset("presets/JustAddNoise.json")
+		option_button.selected = 0
 
 
 func _input(input_event):
@@ -87,11 +110,9 @@ func _input(input_event):
 				lv2_plugin.note_off(0, 0, midi_event.pitch)
 		else:
 			if midi_event.message == MIDI_MESSAGE_NOTE_ON:
-				var amsynth = CsoundServer.get_csound("amsynth")
-				amsynth.note_on(0, midi_event.pitch, midi_event.velocity)
+				csound_synth.note_on(option_button.selected, midi_event.pitch, midi_event.velocity)
 			if midi_event.message == MIDI_MESSAGE_NOTE_OFF:
-				var amsynth = CsoundServer.get_csound("amsynth")
-				amsynth.note_off(0, midi_event.pitch)
+				csound_synth.note_off(option_button.selected, midi_event.pitch)
 
 
 func _physics_process(delta):
@@ -190,4 +211,26 @@ func seconds_to_beat(seconds: float, bpm: float) -> float:
 
 func _on_amsynth_parameter_changed(parameter: int, value: float) -> void:
 	var amsynth = CsoundServer.get_csound("amsynth")
-	amsynth.send_control_channel(csound_parameters[parameter], value)
+	var parameter_name = get_parameter_name(option_button.text, parameter)
+	amsynth.send_control_channel(parameter_name, value)
+
+
+func get_parameter_name(instrument: String, parameter: int):
+	return "%s.%s" % [instrument, csound_parameters[parameter]]
+
+
+func get_parameter_values(instrument: String):
+	var content = {}
+
+	for parameter in range(0, len(csound_parameters)):
+		var value = csound_synth.get_control_channel(get_parameter_name(instrument, parameter))
+		content[str(parameter)] = str(value)
+
+	return content
+
+
+func _on_csound_option_button_item_selected(index: int) -> void:
+	var content = get_parameter_values(option_button.text)
+
+	amsynth.update_knobs(content)
+	amsynth.update_waveforms()

@@ -34,6 +34,7 @@ var tempo_tween: Tween
 var current_tempo = 120
 
 var csound: CsoundInstance
+var csound_synth: CsoundInstance
 
 var lv2_plugins = {}
 var synth_active = {}
@@ -69,6 +70,7 @@ signal lv2_plugin_ready(name: String, default_preset: String)
 
 func _ready():
 	CsoundServer.csound_layout_changed.connect(csound_layout_changed)
+	CsoundServer.csound_ready.connect(_on_csound_ready)
 	Lv2Server.lv2_ready.connect(_on_lv2_ready)
 
 
@@ -83,6 +85,11 @@ func csound_layout_changed():
 	csound = CsoundServer.get_csound("Main")
 	csound.midi_note_on.connect(_on_midi_note_on)
 	csound.midi_note_off.connect(_on_midi_note_off)
+
+
+func _on_csound_ready(name: String):
+	if name == "amsynth":
+		csound_synth = CsoundServer.get_csound(name)
 
 
 func _on_lv2_ready(name: String):
@@ -383,3 +390,8 @@ func _on_player_brain_collision() -> void:
 
 func _on_glitch_timer_timeout() -> void:
 	allow_glitch = true
+
+
+func _on_player_jump() -> void:
+	var offset = 0 #randi_range(0, 6)
+	csound_synth.event_string('i "jump" 0 0.01 0 %d 90' % (48 + offset))

@@ -30,6 +30,7 @@ var current_state: PlayerState = PlayerState.IDLE
 
 
 signal brain_collision
+signal jump
 
 
 func _ready():
@@ -57,6 +58,7 @@ func _physics_process(delta):
 
 	if is_on_floor():
 		if Input.is_action_just_pressed("jump"):
+			jump.emit()
 			animatedSprite.play("start_jump")
 			velocity.y = jump_velocity
 			if shooting_held:

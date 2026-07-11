@@ -1,0 +1,14 @@
+[remap]
+
+importer="csound"
+type="CsoundFileReader"
+uid="uid://bclt8mv81f2gl"
+path="res://.godot/imported/sound_effects.csd-ebeddc98765120c7dd25da9d5d632a33.csoundstr"
+
+[deps]
+
+source_file="res://sound_effects.csd"
+dest_files=["res://.godot/imported/sound_effects.csd-ebeddc98765120c7dd25da9d5d632a33.csoundstr"]
+
+[params]
+
