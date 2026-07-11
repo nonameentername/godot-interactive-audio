@@ -44,55 +44,64 @@ grow_horizontal = 2
 modulate = Color(1, 0.90000004, 0, 1)
 layout_mode = 0
 offset_left = 8.0
-offset_top = 72.0
+offset_top = 8.0
 offset_right = 56.0
-offset_bottom = 120.0
+offset_bottom = 56.0
 text = "⚠"
 
 [node name="PlayButton" type="Button" parent="CanvasLayer/Control/Panel" unique_id=778759022]
 modulate = Color(0.33333325, 1, 0, 1)
 layout_mode = 0
 offset_left = 72.0
-offset_top = 72.0
+offset_top = 8.0
 offset_right = 120.0
-offset_bottom = 120.0
+offset_bottom = 56.0
 text = "▶"
 
 [node name="StopButton" type="Button" parent="CanvasLayer/Control/Panel" unique_id=1913062761]
 modulate = Color(1, 0, 0, 1)
 layout_mode = 0
 offset_left = 136.0
-offset_top = 72.0
+offset_top = 8.0
 offset_right = 184.0
-offset_bottom = 120.0
+offset_bottom = 56.0
 text = "⏹"
 
 [node name="HSlider" type="HSlider" parent="CanvasLayer/Control/Panel" unique_id=781493888]
 layout_mode = 0
 offset_left = 200.0
-offset_top = 72.0
+offset_top = 8.0
 offset_right = 1016.0
-offset_bottom = 120.0
+offset_bottom = 56.0
 max_value = 96.0
 step = 0.001
 
 [node name="TempoSpinBox" type="SpinBox" parent="CanvasLayer/Control/Panel" unique_id=1849174822]
 layout_mode = 0
 offset_left = 1024.0
-offset_top = 72.0
+offset_top = 8.0
 offset_right = 1144.0
-offset_bottom = 120.0
+offset_bottom = 56.0
 min_value = 60.0
 max_value = 1000.0
 value = 120.0
 prefix = "Tempo"
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Control" unique_id=427618861]
+modulate = Color(1, 1, 1, 0.6666667)
+layout_mode = 0
+offset_top = 95.0
+offset_right = 1152.0
+offset_bottom = 584.0
+color = Color(0.21960784, 0.21960784, 0.21960784, 1)
 
 [node name="TabContainer" type="TabContainer" parent="CanvasLayer/Control" unique_id=355236604]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 128.0
+offset_top = 64.0
+offset_bottom = -64.0
 grow_horizontal = 2
 grow_vertical = 2
 current_tab = 0
@@ -131,7 +140,8 @@ popup/item_1/id = 1
 layout_mode = 1
 anchors_preset = -1
 anchor_bottom = 0.09900001
-offset_bottom = -0.15200806
+offset_top = 584.0
+offset_bottom = 583.848
 
 [connection signal="lv2_plugin_ready" from="SubViewportContainer/SubViewport/Node2D" to="." method="_on_node_2d_lv_2_plugin_ready"]
 [connection signal="pressed" from="CanvasLayer/Control/Panel/PanicButton" to="." method="_on_panic_button_pressed"]
