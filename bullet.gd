@@ -34,13 +34,14 @@ func _physics_process(delta):
 	if collision:
 		animated_sprite.play("end")
 
-		if collision.get_collider() is Brain:
+		var collider = collision.get_collider()
+
+		if collider is Brain:
 			await get_tree().create_timer(0.2).timeout
 			queue_free()
 
-			if not collision.get_collider().is_queued_for_deletion():
-				collision.get_collider().free()
+			if collider:
+				collider.free()
 		else:
 			await get_tree().create_timer(1.0).timeout
 			queue_free()
-

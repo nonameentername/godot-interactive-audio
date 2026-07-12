@@ -50,6 +50,8 @@ var reverb_effect: Lv2Instance
 var crusher: Lv2Instance
 var equalizer: Lv2Instance
 
+const NOTES = [48, 50, 52, 53, 55, 57, 58]
+
 const SYNTH_VOLUME_INPUT_CONTROL = 14
 const SYNTH_LFO_FREQ_INPUT_CONTROL = 15
 const SYNTH_PORTAMENTO_TIME_INPUT_CONTROL = 31
@@ -395,3 +397,8 @@ func _on_glitch_timer_timeout() -> void:
 func _on_player_jump() -> void:
 	var offset = 0 #randi_range(0, 6)
 	csound_synth.event_string('i "jump" 0 0.01 0 %d 90' % (48 + offset))
+
+
+func _on_player_shoot() -> void:
+	var offset = randi_range(0, 6)
+	csound_synth.event_string('i "shoot" 0 0.01 0 %d 90' % (NOTES[offset]))

@@ -347,3 +347,4 @@ autoplay = true
 [connection signal="body_entered" from="EnemyArea2D" to="." method="_on_enemy_area_2d_body_entered"]
 [connection signal="brain_collision" from="Player" to="." method="_on_player_brain_collision"]
 [connection signal="jump" from="Player" to="." method="_on_player_jump"]
+[connection signal="shoot" from="Player" to="." method="_on_player_shoot"]

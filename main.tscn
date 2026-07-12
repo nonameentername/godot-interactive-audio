@@ -130,11 +130,13 @@ offset_right = 448.0
 offset_bottom = 41.0
 selected = 0
 search_bar_enabled = true
-item_count = 2
+item_count = 3
 popup/item_0/text = "synth"
 popup/item_0/id = 0
 popup/item_1/text = "jump"
 popup/item_1/id = 1
+popup/item_2/text = "shoot"
+popup/item_2/id = 2
 
 [node name="Piano" parent="CanvasLayer/Control" unique_id=1839624044 instance=ExtResource("4_1bvp3")]
 layout_mode = 1

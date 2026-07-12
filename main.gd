@@ -94,6 +94,8 @@ func _on_csound_ready(name: String):
 		csound_synth = CsoundServer.get_csound(name)
 		option_button.selected = 1
 		amsynth.load_preset("presets/AndroidChatter.json")
+		option_button.selected = 2
+		amsynth.load_preset("presets/Aria.json")
 		option_button.selected = 0
 
 

@@ -35,6 +35,7 @@ var current_state: PlayerState = PlayerState.IDLE
 
 signal brain_collision
 signal jump
+signal shoot
 
 
 func _ready():
@@ -63,6 +64,8 @@ func _physics_process(delta):
 
 	if Input.is_action_just_pressed("shoot"):
 		shooting_held = true
+
+		shoot.emit()
 
 		shooting = true
 		shoot_timer.start()
