@@ -31,6 +31,18 @@ region = Rect2(0, 64, 64, 64)
 atlas = ExtResource("1_4flbx")
 region = Rect2(0, 512, 64, 64)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_q13i1"]
+atlas = ExtResource("1_4flbx")
+region = Rect2(0, 512, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pylmc"]
+atlas = ExtResource("1_4flbx")
+region = Rect2(0, 832, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pbfsw"]
+atlas = ExtResource("1_4flbx")
+region = Rect2(0, 896, 64, 64)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_n7ghd"]
 atlas = ExtResource("1_4flbx")
 region = Rect2(0, 0, 64, 64)
@@ -88,12 +100,12 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_sweqy")
 }, {
-"duration": 2.0,
+"duration": 3.0,
 "texture": SubResource("AtlasTexture_2hs0m")
 }],
 "loop": 1,
 "name": &"duck_shoot",
-"speed": 10.0
+"speed": 15.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -116,17 +128,31 @@ animations = [{
 }, {
 "frames": [{
 "duration": 0.5,
+"texture": SubResource("AtlasTexture_q13i1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pylmc")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_pbfsw")
+}],
+"loop": 1,
+"name": &"jump_shoot",
+"speed": 15.0
+}, {
+"frames": [{
+"duration": 0.5,
 "texture": SubResource("AtlasTexture_n7ghd")
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_nvl01")
 }, {
-"duration": 2.0,
+"duration": 3.0,
 "texture": SubResource("AtlasTexture_ivps1")
 }],
 "loop": 1,
 "name": &"shoot",
-"speed": 10.0
+"speed": 15.0
 }, {
 "frames": [{
 "duration": 0.5,
@@ -177,8 +203,10 @@ jump_time_to_descent = 0.4
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=678818097]
 sprite_frames = SubResource("SpriteFrames_i3pqv")
-animation = &"walk"
-frame_progress = 0.66511613
+animation = &"idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=319139331]
 shape = SubResource("CapsuleShape2D_onrkg")
+
+[node name="Timer" type="Timer" parent="." unique_id=525840052]
+wait_time = 0.2

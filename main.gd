@@ -93,8 +93,7 @@ func _on_csound_ready(name: String):
 	if name == "amsynth":
 		csound_synth = CsoundServer.get_csound(name)
 		option_button.selected = 1
-		#amsynth.load_preset("presets/BadPig.json")
-		amsynth.load_preset("presets/JustAddNoise.json")
+		amsynth.load_preset("presets/AndroidChatter.json")
 		option_button.selected = 0
 
 

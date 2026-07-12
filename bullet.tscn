@@ -1,0 +1,91 @@
+[gd_scene format=3 uid="uid://dda5j6upvse1n"]
+
+[ext_resource type="Script" uid="uid://cu4nul6kkxgsp" path="res://bullet.gd" id="1_v8qja"]
+[ext_resource type="Texture2D" uid="uid://bnm5w7gr80les" path="res://gun.png" id="2_v8qja"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t4vbm"]
+atlas = ExtResource("2_v8qja")
+region = Rect2(0, 32, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2b2rl"]
+atlas = ExtResource("2_v8qja")
+region = Rect2(0, 16, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b7duk"]
+atlas = ExtResource("2_v8qja")
+region = Rect2(0, 32, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t2bd8"]
+atlas = ExtResource("2_v8qja")
+region = Rect2(0, 48, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h0pa3"]
+atlas = ExtResource("2_v8qja")
+region = Rect2(0, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6ol1o"]
+atlas = ExtResource("2_v8qja")
+region = Rect2(0, 32, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gofb6"]
+atlas = ExtResource("2_v8qja")
+region = Rect2(0, 16, 32, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jkhly"]
+animations = [{
+"frames": [{
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_t4vbm")
+}, {
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_2b2rl")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_b7duk")
+}, {
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_t2bd8")
+}],
+"loop": 1,
+"name": &"end",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_h0pa3")
+}, {
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_6ol1o")
+}, {
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_gofb6")
+}],
+"loop": 1,
+"name": &"start",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jkhly"]
+size = Vector2(14, 12)
+
+[node name="bullet" type="RigidBody2D" unique_id=2088257645]
+gravity_scale = 0.0
+script = ExtResource("1_v8qja")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1908274240]
+sprite_frames = SubResource("SpriteFrames_jkhly")
+frame_progress = 0.042011347
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=80660957]
+position = Vector2(-7, 0)
+shape = SubResource("RectangleShape2D_jkhly")
+
+[node name="Timer" type="Timer" parent="." unique_id=1714787599]
+wait_time = 0.2
+one_shot = true
+autostart = true
