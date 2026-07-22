@@ -1,14 +1,24 @@
 godot-interactive-audio
 =======================
 
-![image-01](./images/image-01.png)
-![image-02](./images/image-02.png)
-![image-03](./images/image-03.png)
+A demonstration of interactive audio systems in Godot, created for GodotCon 2026.
 
-install
--------
+Video
+-----
 
-1. Download depedencies
+[![Interactive Audio in Godot](./images/godot-interactive-audio.png)](https://www.youtube.com/watch?v=s4RdpC1FSEI)
+
+Images
+------
+
+![Gameplay demo](./images/image-01.png)
+![Interactive audio demo](./images/image-02.png)
+![Synth interface](./images/image-03.png)
+
+Installation
+------------
+
+1. Download the dependencies:
 
 ```bash
 godot --headless -s package.gd install

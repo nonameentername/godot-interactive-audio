@@ -28,7 +28,7 @@ maxalloc "$INSTRUMENT_NAME", 2, 1
 #define INSTRUMENT_CHANNEL #3#
 
 #include "addons/synths/amsynth_instr.inc"
-maxalloc "$INSTRUMENT_NAME", 2, 1
+maxalloc "$INSTRUMENT_NAME", 8, 1
 
 </CsInstruments>
 <CsScore>
