@@ -27,7 +27,7 @@ var player: Player = $Player
 var number_of_brains = 0
 var allow_glitch: bool = true
 
-var water_eq_tween: Tween
+var control_tweens: Dictionary = {}
 var reverb_current_value: int = 0
 
 var tempo_tween: Tween
@@ -241,19 +241,39 @@ func _on_timer_timeout() -> void:
 	brain.global_position = spawn_location.global_position
 
 
-func tween_control_channel(audio_plugin: Lv2Instance, control: int, from_value: float, to_value: float) -> void:
+func tween_control_channel(
+		audio_plugin: Lv2Instance,
+		control: int,
+		from_value: float,
+		to_value: float
+) -> void:
 	if not audio_plugin:
 		return
 
-	if water_eq_tween:
-		water_eq_tween.kill()
+	var key = [audio_plugin.get_instance_id(), control]
 
-	water_eq_tween = get_tree().create_tween()
-	water_eq_tween.tween_method(
-		func(value): audio_plugin.send_input_control_channel(control, value),
+	if control_tweens.has(key):
+		var existing_tween: Tween = control_tweens[key]
+
+		if existing_tween and existing_tween.is_valid():
+			existing_tween.kill()
+
+	var tween := get_tree().create_tween()
+	control_tweens[key] = tween
+
+	tween.tween_method(
+		func(value: float):
+			if is_instance_valid(audio_plugin):
+				audio_plugin.send_input_control_channel(control, value),
 		from_value,
 		to_value,
 		0.2
+	)
+
+	tween.finished.connect(
+		func():
+			if control_tweens.get(key) == tween:
+				control_tweens.erase(key)
 	)
 
 
